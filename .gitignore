@@ -1,6 +1,5 @@
-*.pdf
-*.docx
-*.bin
+/html
+/latex
 
 *.sln
 *.vcxproj
