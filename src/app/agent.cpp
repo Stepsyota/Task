@@ -1,6 +1,6 @@
 #include "agent.h"
 #include "../scan/directory_scanner.h"
-#include "../scan/file_processor.h"
+#include "../core/file_processor.h"
 #include "../io/values_reader.h"
 
 

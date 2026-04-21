@@ -1,6 +1,6 @@
 #pragma once
 
-#include "file_processor.h"
+#include "../core/file_processor.h"
 #include "../io/report_writer.h"
 
 #include <filesystem>
