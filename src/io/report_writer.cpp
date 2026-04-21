@@ -16,10 +16,10 @@ ReportWriter::ReportWriter(
         throw std::runtime_error("Failed to open output file: " + white.string());
     }
     if (!black_out) {
-        throw std::runtime_error("Failed to open output file: " + white.string());
+        throw std::runtime_error("Failed to open output file: " + black.string());
     }
     if (!anomaly_out) {
-        throw std::runtime_error("Failed to open output file: " + white.string());
+        throw std::runtime_error("Failed to open output file: " + anomaly.string());
     }
 }
 
