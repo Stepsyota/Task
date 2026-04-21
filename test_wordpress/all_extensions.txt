@@ -1,0 +1,17 @@
+crt
+css
+eot
+gif
+html
+js
+json
+md
+php
+png
+scss
+svg
+ttf
+txt
+webp
+woff
+woff2
