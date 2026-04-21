@@ -1,6 +1,8 @@
 /html
 /latex
 
+/test_wordpress/wordpress
+
 *.sln
 *.vcxproj
 *.vcxproj.filters
