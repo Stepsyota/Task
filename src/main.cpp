@@ -6,9 +6,9 @@
 #include "io/report_writer.h"
 
 int main(int argc, char* argv[]) {
-    Config cfg(argc, argv);
-
     try {
+        Config cfg(argc, argv);
+
         Agent agent(cfg);
         agent.run();
     } catch (const std::exception& e) {
