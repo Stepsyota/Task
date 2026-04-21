@@ -2,12 +2,16 @@
 #include "../scan/directory_scanner.h"
 #include "../core/file_processor.h"
 #include "../io/values_reader.h"
+#include "io/info_writer.h"
 
 
 Agent::Agent(Config cfg) : config(cfg), writer("output_white.txt", "output_black.txt", "output_anomaly.txt"){}
 
 void Agent::run() {
     load_sets();
+
+    auto info = InfoWriter::collect(config.get_scan_directory());
+    InfoWriter::write(info);
 
     FileProcessor processor(white_hash_set, black_hash_set, extensions_set, writer);
     DirectoryScanner::scan(config.get_scan_directory(), processor);

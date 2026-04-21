@@ -1,0 +1,78 @@
+#include "info_writer.h"
+#include <filesystem>
+#include <fstream>
+
+
+static std::string detect_os() {
+#ifdef _WIN32
+    return "Windows";
+#elif __linux__
+    return "Linux";
+#elif __APPLE__
+    return "macOS";
+#else
+    return "Unknown";
+#endif
+}
+
+static std::string detect_agent_version() {
+    return std::string(AGENT_VERSION);
+}
+
+static bool is_wordpress(const std::filesystem::path& root) {
+    return std::filesystem::exists(root / "wp-admin") &&
+        std::filesystem::exists(root / "wp-content") &&
+        std::filesystem::exists(root / "wp-includes");
+}
+
+static std::string get_wp_version(const std::filesystem::path& root) {
+    std::ifstream file(root / "wp-includes" / "version.php");
+    if (!file)
+        return "Unknown version";
+
+    std::string line;
+
+    while (std::getline(file, line)) {
+        if (line.find("$wp_version") == std::string::npos)
+            continue;
+
+        auto first = line.find_first_of("'/");
+        auto second = line.find_first_of("'\'", first + 1);
+
+        if (first != std::string::npos && second != std::string::npos) {
+            return line.substr(first + 1, second - first - 1);
+        }
+    }
+
+    return "Unknown version";
+}
+
+InfoWriter::Info InfoWriter::collect(const std::filesystem::path& root) {
+    InfoWriter::Info info;
+
+    info.agent_version = detect_agent_version();
+    info.os = detect_os();
+
+    info.is_wordpress = is_wordpress(root);
+    if (info.is_wordpress) {
+        info.wp_version = get_wp_version(root);
+    }
+    else {
+        info.wp_version = "N/A";
+    }
+    return info;
+}
+
+void InfoWriter::write(const InfoWriter::Info& info, const std::filesystem::path& path) {
+    std::ofstream out(path / "info.txt");
+
+    out << "Agent version: " << info.agent_version << '\n';
+    out << "OS: " << info.os << '\n';
+
+    if (info.is_wordpress) {
+        out << "CMS: WordPress\n";
+        out << "WordPress version: " << info.wp_version << '\n';
+    } else {
+        out << "CMS: unknown\n";
+    }
+}
