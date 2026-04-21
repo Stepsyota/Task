@@ -19,6 +19,8 @@ std::unordered_set<std::string> ValuesReader::load_hashes_to_set(const std::file
         std::string token;
 
         while (iss >> token) {
+            std::transform(token.begin(), token.end(), token.begin(),
+                [](unsigned char c){ return std::tolower(c); });
             result.insert(token);
         }
     }
