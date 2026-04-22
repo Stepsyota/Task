@@ -84,12 +84,12 @@ class Config {
         */
         static void check_exists(const std::filesystem::path & path);
 
-        std::filesystem::path scan_directory;   //< Директория для сканирования
-        std::filesystem::path white_list_file;  //< Файл белого списка
-        std::filesystem::path black_list_file;  //< Файл черного списка
-        std::filesystem::path extensions_file;  //< Файл расширений
+        std::filesystem::path scan_directory;   ///< Директория для сканирования
+        std::filesystem::path white_list_file;  ///< Файл белого списка
+        std::filesystem::path black_list_file;  ///< Файл черного списка
+        std::filesystem::path extensions_file;  ///< Файл расширений
 
-        std::filesystem::path white_output_file = "output_white.txt";       //< Выходной файл white (временно, может быть переопределенно в будущем)
-        std::filesystem::path black_output_file = "output_black.txt";       //< Выходной файл black (временно, может быть переопределенно в будущем)
-        std::filesystem::path anomaly_output_file = "output_anomaly.txt";   //< Выходной файл anomaly (временно, может быть переопределенно в будущем)
+        std::filesystem::path white_output_file = "output_white.txt";       ///< Выходной файл white (временно, может быть переопределенно в будущем)
+        std::filesystem::path black_output_file = "output_black.txt";       ///< Выходной файл black (временно, может быть переопределенно в будущем)
+        std::filesystem::path anomaly_output_file = "output_anomaly.txt";   ///< Выходной файл anomaly (временно, может быть переопределенно в будущем)
 };

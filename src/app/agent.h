@@ -54,10 +54,10 @@ public:
 
 private:
     
-    Config config;          //< Конфигурация агента и путей к ресурсам
-    ReportWriter writer;    //< Модуль записи результатов классификации файлов
+    Config config;          ///< Конфигурация агента и путей к ресурсам
+    ReportWriter writer;    ///< Модуль записи результатов классификации файлов
 
-    std::unordered_set<std::string> white_hash_set; //< Множество допустимых хэшей (whitelist)
-    std::unordered_set<std::string> black_hash_set; //< Множество запрещённых хэшей (blacklist)
-    std::unordered_set<std::string> extensions_set; //< Множество допустимых расширений файлов
+    std::unordered_set<std::string> white_hash_set; ///< Множество допустимых хэшей (whitelist)
+    std::unordered_set<std::string> black_hash_set; ///< Множество запрещённых хэшей (blacklist)
+    std::unordered_set<std::string> extensions_set; ///< Множество допустимых расширений файлов
 };
