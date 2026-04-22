@@ -1,27 +1,27 @@
 #include "file_processor.h"
 #include "../crypto/hasher.h"
-#include "../io/report_writer.h"
 
 
 FileProcessor::FileProcessor(const std::unordered_set<std::string>& white,
                 const std::unordered_set<std::string>& black,
-                const std::unordered_set<std::string>& extensions,
-                ReportWriter& wrt)
-    : white(white), black(black), extensions(extensions), writer(wrt) {}
+                const std::unordered_set<std::string>& extensions)
+    : white(white), black(black), extensions(extensions) {}
 
-void FileProcessor::process(const std::filesystem::path& file) {
-    if (!check_extension(file)) return;
+Result FileProcessor::process(const std::filesystem::path& file) {
+    if (!check_extension(file)) {
+        return {Result::Type::Ignored, file};
+    }
 
     auto hash = md5_file(file);
 
-    if (white.find(hash) != white.end())
-        writer.write(ReportWriter::Type::White, file);
-    else if (black.find(hash) != black.end())
-        writer.write(ReportWriter::Type::Black, file);
-    else
-        writer.write(ReportWriter::Type::Anomaly, file);
+    if (white.contains(hash))
+        return {Result::Type::White, file};
+    else if (black.contains(hash))
+        return {Result::Type::Black, file};
+
+    return {Result::Type::Anomaly, file};
 }
 
 bool FileProcessor::check_extension(const std::filesystem::path& file) {
-    return extensions.find(file.extension().string()) != extensions.end();
+    return extensions.contains(file.extension().string());
 }
