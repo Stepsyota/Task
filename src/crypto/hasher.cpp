@@ -57,13 +57,16 @@ std::string Hasher::md5_file(const std::filesystem::path& path) {
         throw std::runtime_error("OpenSSL: EVP_DigestFinal_ex failed");
     }
 
-    std::ostringstream oss;
+    static const char* hex = "0123456789abcdef";
 
-    // переводим бинарный хэш в читаемую hex-строку
-    oss << std::hex << std::setfill('0');
-    for (unsigned int i = 0; i < len; i++) {
-        oss << std::setw(2) << static_cast<int>(result[i]);
+    std::string out;
+    out.resize(len * 2);
+
+    for (unsigned i = 0; i < len; i++) {
+        unsigned char b = result[i];
+        out[i * 2]     = hex[b >> 4];
+        out[i * 2 + 1] = hex[b & 0x0F];
     }
 
-    return oss.str();
+    return out;
 }
