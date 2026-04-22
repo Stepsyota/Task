@@ -30,3 +30,26 @@ target_include_directories(agent PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/generated
 )
+
+
+# CPack
+
+install(TARGETS agent
+    RUNTIME DESTINATION bin
+)
+
+set(CPACK_GENERATOR "DEB;RPM")
+
+set(CPACK_PACKAGE_NAME "agent")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+set(CPACK_PACKAGE_CONTACT "stepsyota@gmail.com")
+
+set(CPACK_PACKAGE_DESCRIPTION "File analysis agent")
+
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Stepan Good")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
+set(CPACK_DEBIAN_PACKAGE_SECTION "utils")
+set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libssl3")
+
+include(CPack)
