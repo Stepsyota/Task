@@ -23,16 +23,18 @@ ReportWriter::ReportWriter(
     }
 }
 
-void ReportWriter::write(Type type, const std::filesystem::path& file) {
-    switch (type) {
-        case Type::White:
-            white_out << file.string() << '\n';
+void ReportWriter::write(const Result& result) {
+    switch (result.type) {
+        case Result::Type::White:
+            white_out << result.file.string() << '\n';
             break;
-        case Type::Black:
-            black_out << file.string() << '\n';
+        case Result::Type::Black:
+            black_out << result.file.string() << '\n';
             break;
-        case Type::Anomaly:
-            anomaly_out << file.string() << '\n';
+        case Result::Type::Anomaly:
+            anomaly_out << result.file.string() << '\n';
+            break;
+        case Result::Type::Ignored:
             break;
     }
 }

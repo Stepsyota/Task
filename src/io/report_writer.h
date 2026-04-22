@@ -2,39 +2,48 @@
 
 #include <filesystem>
 #include <fstream>
+#include "../core/result.h"
 
 
 /**
-* @brief Записывает результаты сканирования файла в разные категории
-*/
+ * @brief Компонент записи результатов анализа файлов.
+ *
+ * ReportWriter является конечной стадией pipeline обработки файлов.
+ * Он принимает результаты классификации и распределяет их по отдельным файлам:
+ * - whitelist результаты
+ * - blacklist результаты
+ * - аномальные файлы
+ */
 class ReportWriter {
     public:
-
         /**
-        * @brief Открывает потоки файлов для записи результатов
+        * @brief Открывает выходные файлы для записи результатов анализа.
+        *
+        * Инициализирует файловые потоки для каждой категории результата:
+        * - white
+        * - black
+        * - anomaly
+        *
+        * @throws std::runtime_error если невозможно открыть один из выходных файлов
         */
         ReportWriter(const std::filesystem::path& white_out, const std::filesystem::path& black_out, const std::filesystem::path& anomaly_out);
 
-        /**
-        * @brief Категория результата сканирования файла
-        * 
-        */
-        enum class Type {
-            White,
-            Black,
-            Anomaly
-        };
 
         /**
-        * @brief Записывает путь в соответствующий категории тип файла
-        * 
-        * @param type категория результата
-        * @param file путь файла, который будет записан
+        * @brief Записывает результат анализа в соответствующий выходной файл.
+        *
+        * Выполняет маршрутизацию результата в зависимости от его типа:
+        * - White   → файл whitelist
+        * - Black   → файл blacklist
+        * - Anomaly → файл неизвестных/подозрительных файлов
+        * - Ignored → не записывается
+        *
+        * @param result Результат классификации файла
         */
-        void write(Type type, const std::filesystem::path& file);
+        void write(const Result& result);
 
     private:
-        std::ofstream white_out;    //< Поток файла output_white.txt
-        std::ofstream black_out;    //< Поток файла output_black.txt
-        std::ofstream anomaly_out;  //< Поток файла output_anomaly.txt
+        std::ofstream white_out;    ///< Поток файла для whitelist результатов
+        std::ofstream black_out;    ///< Поток файла для blacklist результатов
+        std::ofstream anomaly_out;  ///< Поток файла для аномальных файлов
 };
