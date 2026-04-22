@@ -34,6 +34,24 @@ class Config {
         */
         const std::filesystem::path & get_extensions_file() const;
 
+        /**
+        * @brief Возвращает путь к выходному файлу для white хэшей
+        * @return path
+        */
+        const std::filesystem::path & get_white_output_file() const;
+
+        /**
+        * @brief Возвращает путь к выходному файлу для black хэшей
+        * @return path
+        */
+        const std::filesystem::path & get_black_output_file() const;
+
+        /**
+        * @brief Возвращает путь к выходному файлу для неизвестных хэшей
+        * @return path
+        */
+        const std::filesystem::path & get_anomaly_output_file() const;
+
     private:
         /**
         * @brief Проверяет корректность конфигурации.
@@ -70,4 +88,8 @@ class Config {
         std::filesystem::path white_list_file;  //< Файл белого списка
         std::filesystem::path black_list_file;  //< Файл черного списка
         std::filesystem::path extensions_file;  //< Файл расширений
+
+        std::filesystem::path white_output_file = "output_white.txt";       //< Выходной файл white (временно, может быть переопределенно в будущем)
+        std::filesystem::path black_output_file = "output_black.txt";       //< Выходной файл black (временно, может быть переопределенно в будущем)
+        std::filesystem::path anomaly_output_file = "output_anomaly.txt";   //< Выходной файл anomaly (временно, может быть переопределенно в будущем)
 };

@@ -32,6 +32,17 @@ const std::filesystem::path & Config::get_extensions_file() const {
     return extensions_file;
 }
 
+const std::filesystem::path & Config::get_white_output_file() const {
+    return white_output_file;
+}
+
+const std::filesystem::path & Config::get_black_output_file() const {
+    return black_output_file;
+}
+
+const std::filesystem::path & Config::get_anomaly_output_file() const {
+    return anomaly_output_file;
+}
 
 void Config::validate() const{
     check_directory(scan_directory);
