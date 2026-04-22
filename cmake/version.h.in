@@ -1,3 +1,4 @@
 #pragma once
 
+/// @brief Версия агента (генерируется CMake)
 #define PROJECT_VERSION "@PROJECT_VERSION@" 
