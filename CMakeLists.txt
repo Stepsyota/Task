@@ -13,7 +13,6 @@ add_executable(agent
     src/io/report_writer.cpp
     src/io/values_reader.cpp
     src/io/info_writer.cpp
-    src/scan/directory_scanner.cpp
     src/core/file_processor.cpp
 )
 
