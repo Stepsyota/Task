@@ -4,6 +4,7 @@
 #include <fstream>
 #include "../core/result.h"
 
+#include <mutex>
 
 /**
  * @brief Компонент записи результатов анализа файлов.
@@ -46,4 +47,6 @@ class ReportWriter {
         std::ofstream white_out;    ///< Поток файла для whitelist результатов
         std::ofstream black_out;    ///< Поток файла для blacklist результатов
         std::ofstream anomaly_out;  ///< Поток файла для аномальных файлов
+
+        std::mutex m;
 };

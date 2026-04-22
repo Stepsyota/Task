@@ -1,6 +1,7 @@
 #include "report_writer.h"
 #include <filesystem>
 #include <fstream>
+#include <mutex>
 
 
 ReportWriter::ReportWriter(
@@ -24,6 +25,8 @@ ReportWriter::ReportWriter(
 }
 
 void ReportWriter::write(const Result& result) {
+    std::lock_guard<std::mutex> lock(m);
+    
     switch (result.type) {
         case Result::Type::White:
             white_out << result.file.string() << '\n';
