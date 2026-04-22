@@ -15,8 +15,8 @@ static std::string detect_os() {
 #endif
 }
 
-static std::string detect_agent_version() {
-    return std::string(AGENT_VERSION);
+static std::string detect_project_version() {
+    return std::string(PROJECT_VERSION);
 }
 
 static bool is_wordpress(const std::filesystem::path& root) {
@@ -50,7 +50,7 @@ static std::string get_wp_version(const std::filesystem::path& root) {
 InfoWriter::Info InfoWriter::collect(const std::filesystem::path& root) {
     InfoWriter::Info info;
 
-    info.agent_version = detect_agent_version();
+    info.project_version = detect_project_version();
     info.os = detect_os();
 
     info.is_wordpress = is_wordpress(root);
@@ -66,7 +66,7 @@ InfoWriter::Info InfoWriter::collect(const std::filesystem::path& root) {
 void InfoWriter::write(const InfoWriter::Info& info, const std::filesystem::path& path) {
     std::ofstream out(path / "info.txt");
 
-    out << "Agent version: " << info.agent_version << '\n';
+    out << "Project version: " << info.project_version << '\n';
     out << "OS: " << info.os << '\n';
 
     if (info.is_wordpress) {

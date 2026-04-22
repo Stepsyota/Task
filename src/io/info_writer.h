@@ -9,7 +9,7 @@ class InfoWriter {
     public:
     
     struct Info {
-        std::string agent_version;
+        std::string project_version;
         std::string os;
         bool is_wordpress;
         std::string wp_version;
