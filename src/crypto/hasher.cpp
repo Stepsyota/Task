@@ -8,21 +8,28 @@
 #include <array>
 #include <iomanip>
 
-std::string md5_file(const std::filesystem::path& path) {
+Hasher::Hasher() {
+    ctx = EVP_MD_CTX_new();
+
+    if (!ctx) {
+        throw std::runtime_error("OpenSSL: EVP_MD_CTX_new failed");
+    }
+}
+
+Hasher::~Hasher() {
+    if (ctx) {
+        EVP_MD_CTX_free(ctx);
+    }
+}
+
+std::string Hasher::md5_file(const std::filesystem::path& path) {
     std::ifstream file(path, std::ios::binary);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file: " + path.string());
     }
 
-    // создаём контекст MD5 (EVP — универсальный API OpenSSL)
-    std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)>
-        ctx(EVP_MD_CTX_new(), EVP_MD_CTX_free);
 
-    if (!ctx) {
-        throw std::runtime_error("OpenSSL: EVP_MD_CTX_new failed");
-    }
-
-    if (!EVP_DigestInit_ex(ctx.get(), EVP_md5(), nullptr)) {
+    if (!EVP_DigestInit_ex(ctx, EVP_md5(), nullptr)) {
         throw std::runtime_error("OpenSSL: EVP_DigestInit_ex failed");
     }
 
@@ -35,7 +42,7 @@ std::string md5_file(const std::filesystem::path& path) {
 
         if (bytes > 0) {
             // добавляем очередной блок данных в хэш
-            if (!EVP_DigestUpdate(ctx.get(), buffer.data(), bytes)) {
+            if (!EVP_DigestUpdate(ctx, buffer.data(), bytes)) {
                 throw std::runtime_error("OpenSSL: EVP_DigestUpdate failed for file: " + path.string());
             }
             
@@ -46,7 +53,7 @@ std::string md5_file(const std::filesystem::path& path) {
     unsigned int len = 0;
 
     // получаем итоговый MD5 (16 байт)
-    if (!EVP_DigestFinal_ex(ctx.get(), result, &len)) {
+    if (!EVP_DigestFinal_ex(ctx, result, &len)) {
         throw std::runtime_error("OpenSSL: EVP_DigestFinal_ex failed");
     }
 
