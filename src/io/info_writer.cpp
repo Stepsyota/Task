@@ -70,7 +70,7 @@ static std::string get_wp_version(const std::filesystem::path& root) {
         if (line.find("$wp_version") == std::string::npos)
             continue;
 
-        auto first = line.find_first_of("'/");
+        auto first = line.find_first_of("'\"");
         auto second = line.find_first_of("'\"", first + 1);
 
         if (first != std::string::npos && second != std::string::npos) {
