@@ -1,6 +1,6 @@
 #include "file_processor.h"
 #include "../crypto/hasher.h"
-
+#include <algorithm>
 
 FileProcessor::FileProcessor(const std::unordered_set<std::string>& white,
                 const std::unordered_set<std::string>& black,
@@ -23,5 +23,10 @@ Result FileProcessor::process(const std::filesystem::path& file) {
 }
 
 bool FileProcessor::check_extension(const std::filesystem::path& file) {
-    return extensions.contains(file.extension().string());
+    std::string ext = file.extension().string();
+
+    std::transform(ext.begin(), ext.end(), ext.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+
+    return extensions.contains(ext);
 }
