@@ -3,6 +3,7 @@
 #include "../core/file_processor.h"
 #include "../io/values_reader.h"
 #include "../io/info_writer.h"
+#include <iostream>
 
 
 Agent::Agent(Config cfg) : config(cfg), 
@@ -13,6 +14,18 @@ Agent::Agent(Config cfg) : config(cfg),
         white_hash_set = ValuesReader::load_hashes_to_set(cfg.get_white_list_file());
         black_hash_set = ValuesReader::load_hashes_to_set(cfg.get_black_list_file());
         extensions_set = ValuesReader::load_extensions_to_set(cfg.get_extensions_file());
+
+        // Устранить неоднозначность: хэши, присутствующие в black, не должны оставаться в white.
+        // Это делает классификацию детерминированной и устраняет "перетягивание" результатов.
+        size_t removed_from_white = 0;
+        for (const auto& h : black_hash_set) {
+            removed_from_white += white_hash_set.erase(h);
+        }
+
+        if (removed_from_white != 0) {
+            std::cerr << "Warning: removed " << removed_from_white
+                      << " hashes from white list because they are also present in black list.\n";
+        }
     }
 
 void Agent::run() {
